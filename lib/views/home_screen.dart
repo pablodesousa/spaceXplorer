@@ -79,16 +79,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 )),
             icon: Image.asset('assets/img/home.png', width: 40),
           ),
-          const BottomNavigationBarItem(
-            title: Text('Signout',
-                style: TextStyle(
-                  color: Colors.white,
-                )),
-            icon: Icon(
-              Icons.exit_to_app,
-              color: Colors.black,
-            ),
-          )
         ],
       ),
       body: _children[_currentIndex],
