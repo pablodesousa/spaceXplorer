@@ -97,9 +97,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 title: new Text("Loading"),
                 content: new Container(
                     child: new SizedBox(
-                  width: 40,
-                  height: 40,
-                ))));
+                      width: 40,
+                      height: 40,
+                    ))));
         super.setState(() {
           bloc.add(FetchLoginData(getUserLogin, '',
               variables: <String, dynamic>{
@@ -185,48 +185,48 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
         body: Container(
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(5)),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-              color: Colors.grey.shade200,
-              offset: const Offset(2, 4),
-              blurRadius: 5,
-              spreadRadius: 2)
-        ],
-        image: const DecorationImage(
-          image: AssetImage('assets/img/Background.jpg'),
-          fit: BoxFit.cover,
-        ),
-      ),
-      height: height,
-      child: Stack(
-        children: <Widget>[
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(height: height * .2),
-                  _title(),
-                  const SizedBox(height: 50),
-                  _usernameField('username'),
-                  const SizedBox(height: 50),
-                  _passwordField('password'),
-                  const SizedBox(height: 20),
-                  _submitButton(),
-                  SizedBox(height: height * .055),
-                  _createAccountLabel(),
-                ],
-              ),
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(5)),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                  color: Colors.grey.shade200,
+                  offset: const Offset(2, 4),
+                  blurRadius: 5,
+                  spreadRadius: 2)
+            ],
+            image: const DecorationImage(
+              image: AssetImage('assets/img/Background.jpg'),
+              fit: BoxFit.cover,
             ),
           ),
-          Positioned(top: 40, left: 0, child: _backButton()),
-        ],
-      ),
-    ));
+          height: height,
+          child: Stack(
+            children: <Widget>[
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(height: height * .2),
+                      _title(),
+                      const SizedBox(height: 50),
+                      _usernameField('username'),
+                      const SizedBox(height: 50),
+                      _passwordField('password'),
+                      const SizedBox(height: 20),
+                      _submitButton(),
+                      SizedBox(height: height * .055),
+                      _createAccountLabel(),
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(top: 40, left: 0, child: _backButton()),
+            ],
+          ),
+        ));
   }
 
   @override
@@ -236,6 +236,8 @@ class _LoginScreenState extends State<LoginScreen> {
         bloc = BlocProvider.of<LoginBloc>(context);
         print(state);
         if (state is LoadDataFail) {
+          Navigator.pop(context);
+          bloc.add(SetDefault());
           return login();
         } else if (state is LoadDataSuccess) {
           data = state.data;
