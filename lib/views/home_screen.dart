@@ -39,8 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
       BlocProvider<TripBloc>(
         create: (BuildContext context) => TripBloc()..add(FetchTripData(getTrip, widget.token)),
         child: TripScreen(token : widget.token),
-      ),
-      Container(color: Colors.white),
+      )
     ];
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
@@ -71,14 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: Colors.white,
                 )),
             icon: Image.asset('assets/img/Historique.png', width: 40),
-          ),
-          BottomNavigationBarItem(
-            title: const Text('Profile',
-                style: TextStyle(
-                  color: Colors.white,
-                )),
-            icon: Image.asset('assets/img/home.png', width: 40),
-          ),
+          )
         ],
       ),
       body: _children[_currentIndex],

@@ -1,8 +1,15 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:math';
+import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:spacexplorer/blocs/profile/profile.dart';
+import 'package:spacexplorer/graphQl/Mutation.dart';
 import 'package:spacexplorer/models/spaceXFactory.dart';
+import 'package:spacexplorer/graphQl/Queries.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key key, this.token}) : super(key: key);
@@ -13,10 +20,41 @@ class MainScreen extends StatefulWidget {
   _MainScreenState createState() => _MainScreenState();
 }
 
-
 class _MainScreenState extends State<MainScreen> {
+  File _image;
+  ImagePicker picker = ImagePicker();
+  String image64;
+  final String _chars =
+      'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+  final Random _rnd = Random();
+  ProfileBloc bloc;
+
+  String getRandomString(int length) =>
+      String.fromCharCodes(Iterable<int>.generate(
+          length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+
   ProfileList profile;
-  Widget _displayHomePage() {
+
+  Future<void> getImage() async {
+    final PickedFile pickedFile =
+    await picker.getImage(source: ImageSource.camera);
+
+    super.setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+        final Uint8List image = File(pickedFile.path).readAsBytesSync();
+        image64 = base64Encode(image);
+        bloc.add(SetProfilePicture(uploadAvatar, widget.token,
+            variables: <String, dynamic>{
+              'base64str': image64,
+              'name': getRandomString(15) + '.jpg',
+              'type': 'image/jpeg'
+            }));
+      }
+    });
+  }
+
+  Widget _displayMainPage() {
     return SizedBox.expand(
       child: Container(
           decoration: BoxDecoration(
@@ -58,6 +96,20 @@ class _MainScreenState extends State<MainScreen> {
                     }
                   })()),
                 ),
+              ),
+              Positioned(
+                width: MediaQuery.of(context).size.width / 8,
+                height: MediaQuery.of(context).size.height / 8,
+                left: MediaQuery.of(context).size.width / 4,
+                bottom: MediaQuery.of(context).size.height / 1.80,
+                child: GestureDetector(
+                  onTap: () {
+                    super.setState(() {
+                      bloc.add(SetPicture());
+                    });
+                  },
+                  child: const Icon(Icons.add_a_photo, color: Colors.white),
+                ),
               )
             ],
           )),
@@ -66,21 +118,28 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bloc = BlocProvider.of<ProfileBloc>(context);
     return BlocBuilder<ProfileBloc, ProfileStates>(
         builder: (BuildContext context, ProfileStates state) {
-      if (state is LoadDataSuccess)
-        {
-          profile = ProfileList.fromJson(state.data['user'] as List<dynamic>);
-          return _displayHomePage();
-        }
-      else if (state is LoadDataFail)
-        return Container();
-      else
-        return Container(
-          child: Center(
-            child: Text('loading'),
-          ),
-        );
-    });
+          if (state is LoadDataSuccess) {
+            profile = ProfileList.fromJson(state.data['user'] as List<dynamic>);
+            return _displayMainPage();
+          } else if (state is LoadDataFail)
+            return Container();
+          else if (state is Picture) {
+            getImage();
+
+            bloc.add(FetchProfileData(getProfile, widget.token));
+            return _displayMainPage();
+          } else if (state is Upload) {
+            bloc.add(FetchProfileData(getProfile, widget.token));
+            return _displayMainPage();
+          } else
+            return Container(
+              child: Center(
+                child: Text('loading'),
+              ),
+            );
+        });
   }
 }

@@ -11,6 +11,14 @@ class Loading extends ProfileStates {
   Loading() : super();
 }
 
+class Picture extends ProfileStates {
+  Picture() : super();
+}
+
+class Upload extends ProfileStates {
+  Upload() : super();
+}
+
 class LoadDataSuccess extends ProfileStates {
   final dynamic data;
   LoadDataSuccess(this.data) : super();

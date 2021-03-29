@@ -17,3 +17,18 @@ class FetchProfileData extends ProfileEvents {
   @override
   List<Object> get props => [query, variables];
 }
+
+class SetProfilePicture extends ProfileEvents {
+  final String query;
+  final String token;
+  final Map<String, dynamic> variables;
+
+  SetProfilePicture(this.query, this.token, {this.variables}) : super();
+
+  @override
+  List<Object> get props => [query, variables];
+}
+
+class SetPicture extends ProfileEvents {
+  SetPicture() : super();
+}

@@ -236,13 +236,13 @@ class _LoginScreenState extends State<LoginScreen> {
         bloc = BlocProvider.of<LoginBloc>(context);
         print(state);
         if (state is LoadDataFail) {
-          Navigator.pop(context);
           bloc.add(SetDefault());
+          Navigator.of(context, rootNavigator: true).pop('dialog');
           return login();
         } else if (state is LoadDataSuccess) {
           data = state.data;
           print(data);
-          Navigator.pop(context);
+          Navigator.of(context, rootNavigator: true).pop('dialog');
           return HomeScreen(token: data['Login']['token']);
         } else
           return login();

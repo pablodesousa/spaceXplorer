@@ -17,6 +17,9 @@ class LoginBloc extends Bloc<LoginEvents, LoginStates> {
     if (event is FetchLoginData) {
       yield* _mapFetchLoginDataToStates(event);
     }
+    if (event is SetDefault) {
+      yield Default();
+    }
   }
 
   Stream<LoginStates> _mapFetchLoginDataToStates(FetchLoginData event) async* {

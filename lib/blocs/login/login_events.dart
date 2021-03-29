@@ -17,3 +17,7 @@ class FetchLoginData extends LoginEvents {
   @override
   List<Object> get props => [query, variables];
 }
+
+class SetDefault extends LoginEvents {
+  SetDefault() : super();
+}
