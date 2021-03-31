@@ -1,13 +1,9 @@
-import 'dart:convert';
-import 'dart:io';
-import 'dart:math';
-import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:spacexplorer/blocs/profile/profile.dart';
 import 'package:spacexplorer/graphQl/Mutation.dart';
+import 'dart:math';
 import 'package:spacexplorer/models/spaceXFactory.dart';
 import 'package:spacexplorer/graphQl/Queries.dart';
 
@@ -21,38 +17,17 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  File _image;
-  ImagePicker picker = ImagePicker();
-  String image64;
+  ProfileBloc bloc;
+  ProfileList profile;
+
   final String _chars =
       'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
   final Random _rnd = Random();
-  ProfileBloc bloc;
+
 
   String getRandomString(int length) =>
       String.fromCharCodes(Iterable<int>.generate(
           length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
-
-  ProfileList profile;
-
-  Future<void> getImage() async {
-    final PickedFile pickedFile =
-    await picker.getImage(source: ImageSource.camera);
-
-    super.setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-        final Uint8List image = File(pickedFile.path).readAsBytesSync();
-        image64 = base64Encode(image);
-        bloc.add(SetProfilePicture(uploadAvatar, widget.token,
-            variables: <String, dynamic>{
-              'base64str': image64,
-              'name': getRandomString(15) + '.jpg',
-              'type': 'image/jpeg'
-            }));
-      }
-    });
-  }
 
   Widget _displayMainPage() {
     return SizedBox.expand(
@@ -124,17 +99,32 @@ class _MainScreenState extends State<MainScreen> {
           if (state is LoadDataSuccess) {
             profile = ProfileList.fromJson(state.data['user'] as List<dynamic>);
             return _displayMainPage();
-          } else if (state is LoadDataFail)
-            return Container();
-          else if (state is Picture) {
-            getImage();
-
+          } else if (state is LoadDataFail) {
             bloc.add(FetchProfileData(getProfile, widget.token));
-            return _displayMainPage();
+            return Container();
+          } else if (state is Picture) {
+            bloc.add(FetchProfileData(getProfile, widget.token));
+            return Container();
           } else if (state is Upload) {
             bloc.add(FetchProfileData(getProfile, widget.token));
-            return _displayMainPage();
-          } else
+            return Container();
+          } else if (state is PictureSuccess)
+          {
+            print(state.data);
+            bloc.add(SetProfilePicture(uploadAvatar, widget.token, variables: {
+              'base64str': state.data,
+              'name': getRandomString(15) +
+                  '.jpg',
+              'type': 'image/jpeg'
+
+            }));
+            return Container(
+              child: Center(
+                child: Text('loading', style: TextStyle(color: Colors.white)),
+              ),
+            );
+          }
+          else
             return Container(
               child: Center(
                 child: Text('loading'),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:spacexplorer/views/login_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:spacexplorer/blocs/signup/signup.dart';
@@ -112,29 +113,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget _submitButton() {
     return GestureDetector(
         onTap: () {
+          EasyLoading.show(status: 'loading...');
           super.setState(() {
             bloc.add(FetchSignupData(signUpUser, '', variables: <String, dynamic> {
               'username': username.text, 'password': password.text, 'email': email.text
             }));
           });
 
-    },
-    child:
-      Container(
-      width: MediaQuery
-          .of(context)
-          .size
-          .width,
-      padding: const EdgeInsets.symmetric(vertical: 15),
-      alignment: Alignment.center,
-      decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(5)),
-          color: Colors.white),
-      child: const Text(
-        'Register',
-        style: TextStyle(fontSize: 20, color: Colors.black),
-      ),
-    ));
+        },
+        child:
+        Container(
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
+          padding: const EdgeInsets.symmetric(vertical: 15),
+          alignment: Alignment.center,
+          decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(5)),
+              color: Colors.white),
+          child: const Text(
+            'Register',
+            style: TextStyle(fontSize: 20, color: Colors.black),
+          ),
+        ));
   }
 
   Widget _loginAccountLabel() {
@@ -271,9 +273,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
       builder: (BuildContext context, SignupStates state) {
         bloc = BlocProvider.of<SignupBloc>(context);
         if (state is LoadDataFail) {
+          EasyLoading.showError('Failed with Error');
           return signup();
         } else if (state is LoadDataSuccess) {
-
+          EasyLoading.dismiss();
           return BlocProvider<login.LoginBloc>(
             create: (BuildContext context) => login.LoginBloc(),
             child: LoginScreen(),

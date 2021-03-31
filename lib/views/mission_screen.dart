@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:spacexplorer/blocs/mission/mission.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:spacexplorer/graphQl/Mutation.dart';
@@ -48,15 +49,8 @@ class _MissionScreenState extends State<MissionScreen> {
                       RaisedButton(
                         child: const Text('Partir en voyage'),
                         onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (_) => new AlertDialog(
-                                  title: new Text("Loading", style: TextStyle(color: Colors.white)),
-                                  content: new Container(
-                                      child: new SizedBox(
-                                        width: 40,
-                                        height: 40,
-                                      ))));
+                          EasyLoading.show(status: 'loading...');
+
                           super.setState(() {
                             bloc.add(BookTrip(bookATrip, widget.token,
                                 variables: <String, dynamic>{
@@ -83,12 +77,11 @@ class _MissionScreenState extends State<MissionScreen> {
         if (state is LoadDataFail) {
           return _displayPlane();
         } else if (state is LoadDataSuccess) {
-          print(state.data);
           launches = LaunchList.fromJson(
               state.data['launches']['launches'] as List<dynamic>);
           return _displayPlane();
         } else if (state is LoadBookTripSuccess) {
-          Navigator.pop(context);
+          EasyLoading.dismiss();
           bloc.add(FetchMissionData(getPlane, widget.token));
           return _displayPlane();
         } else

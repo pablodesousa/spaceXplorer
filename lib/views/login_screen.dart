@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:spacexplorer/graphQl/Queries.dart';
 import 'package:spacexplorer/views/signup_screen.dart';
 import 'package:spacexplorer/blocs/signup/signup.dart' as signup;
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key key}) : super(key: key);
@@ -91,15 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _submitButton() {
     return GestureDetector(
       onTap: () {
-        showDialog(
-            context: context,
-            builder: (_) => new AlertDialog(
-                title: new Text("Loading"),
-                content: new Container(
-                    child: new SizedBox(
-                      width: 40,
-                      height: 40,
-                    ))));
+        EasyLoading.show(status: 'loading...');
         super.setState(() {
           bloc.add(FetchLoginData(getUserLogin, '',
               variables: <String, dynamic>{
@@ -236,13 +229,12 @@ class _LoginScreenState extends State<LoginScreen> {
         bloc = BlocProvider.of<LoginBloc>(context);
         print(state);
         if (state is LoadDataFail) {
+          EasyLoading.showError('Mot de passe ou Identifiant Incorrect');
           bloc.add(SetDefault());
-          Navigator.of(context, rootNavigator: true).pop('dialog');
           return login();
         } else if (state is LoadDataSuccess) {
+          EasyLoading.dismiss();
           data = state.data;
-          print(data);
-          Navigator.of(context, rootNavigator: true).pop('dialog');
           return HomeScreen(token: data['Login']['token']);
         } else
           return login();

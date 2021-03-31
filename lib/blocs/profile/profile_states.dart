@@ -26,6 +26,13 @@ class LoadDataSuccess extends ProfileStates {
   List<Object> get props => data;
 }
 
+class PictureSuccess extends ProfileStates {
+  final dynamic data;
+  PictureSuccess(this.data) : super();
+  @override
+  List<Object> get props => data;
+}
+
 class LoadDataFail extends ProfileStates {
   final dynamic error;
 

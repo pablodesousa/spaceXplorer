@@ -32,21 +32,21 @@ class _TripScreenState extends State<TripScreen> {
 
   Widget build(BuildContext context) {
     return BlocBuilder<TripBloc, TripStates>(
-      builder: (BuildContext context, TripStates state) {
-        if (state is LoadDataSuccess)
-        {
-          print(state.data);
-          trips = SpaceList.fromJson(state.data['trips'] as List<dynamic>);
-          return _displayPlane();
-        }
-        else if (state is LoadDataFail)
-          return Container();
-        else
-          return Container(
-            child: Center(
-              child: Text('loading'),
-            ),
-          );
-      });
+        builder: (BuildContext context, TripStates state) {
+          if (state is LoadDataSuccess)
+          {
+            print(state.data);
+            trips = SpaceList.fromJson(state.data['trips'] as List<dynamic>);
+            return _displayPlane();
+          }
+          else if (state is LoadDataFail)
+            return Container();
+          else
+            return Container(
+              child: Center(
+                child: Text('loading'),
+              ),
+            );
+        });
   }
 }

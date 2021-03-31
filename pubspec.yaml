@@ -31,6 +31,8 @@ dependencies:
   flutter_bloc: ^4.0.1
   equatable: ^1.1.1
   google_fonts: ^0.3.5
+  image_picker:
+  flutter_easyloading: ^3.0.0
   formz: ^0.4.0-nullsafety.0
 
 dev_dependencies:
