@@ -120,23 +120,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
             }));
           });
 
-        },
-        child:
-        Container(
-          width: MediaQuery
-              .of(context)
-              .size
-              .width,
-          padding: const EdgeInsets.symmetric(vertical: 15),
-          alignment: Alignment.center,
-          decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(5)),
-              color: Colors.white),
-          child: const Text(
-            'Register',
-            style: TextStyle(fontSize: 20, color: Colors.black),
-          ),
-        ));
+    },
+    child:
+      Container(
+      width: MediaQuery
+          .of(context)
+          .size
+          .width,
+      padding: const EdgeInsets.symmetric(vertical: 15),
+      alignment: Alignment.center,
+      decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+          color: Colors.white),
+      child: const Text(
+        'Register',
+        style: TextStyle(fontSize: 20, color: Colors.black),
+      ),
+    ));
   }
 
   Widget _loginAccountLabel() {

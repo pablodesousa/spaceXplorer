@@ -1,24 +1,24 @@
 import 'package:equatable/equatable.dart';
 
-abstract class TripStates extends Equatable {
-  TripStates();
+abstract class LeaderStates extends Equatable {
+  LeaderStates();
 
   @override
   List<Object> get props => null;
 }
 
-class Loading extends TripStates {
+class Loading extends LeaderStates {
   Loading() : super();
 }
 
-class LoadDataSuccess extends TripStates {
+class LoadDataSuccess extends LeaderStates {
   final dynamic data;
   LoadDataSuccess(this.data) : super();
   @override
   List<Object> get props => data;
 }
 
-class LoadDataFail extends TripStates {
+class LoadDataFail extends LeaderStates {
   final dynamic error;
 
   LoadDataFail(this.error) : super();

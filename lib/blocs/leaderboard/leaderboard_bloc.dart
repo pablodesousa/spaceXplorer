@@ -1,25 +1,25 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:spacexplorer/blocs/trip/trip.dart';
+import 'package:spacexplorer/blocs/leaderboard/leaderboard.dart';
 import 'package:spacexplorer/services/service.dart';
 
-class TripBloc extends Bloc<TripEvents, TripStates> {
+class LeaderBloc extends Bloc<LeaderEvents, LeaderStates> {
   GraphQLService service;
 
-  TripBloc() {
+  LeaderBloc() {
     service = GraphQLService();
   }
 
   @override
-  TripStates get initialState => Loading();
+  LeaderStates get initialState => Loading();
 
   @override
-  Stream<TripStates> mapEventToState(TripEvents event) async* {
-    if (event is FetchTripData) {
-      yield* _mapFetchTripDataToStates(event);
+  Stream<LeaderStates> mapEventToState(LeaderEvents event) async* {
+    if (event is FetchLeaderData) {
+      yield* _mapFetchLeaderDataToStates(event);
     }
   }
 
-  Stream<TripStates> _mapFetchTripDataToStates(FetchTripData event) async* {
+  Stream<LeaderStates> _mapFetchLeaderDataToStates(FetchLeaderData event) async* {
     final query = event.query;
     final token = event.token;
     final variables = event.variables ?? null;

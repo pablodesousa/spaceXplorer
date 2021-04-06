@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:spacexplorer/blocs/mission/mission.dart';
 import 'package:spacexplorer/blocs/profile/profile.dart';
-import 'package:spacexplorer/blocs/trip/trip.dart';
+import 'package:spacexplorer/blocs/leaderboard/leaderboard.dart';
 import 'package:spacexplorer/graphQl/Queries.dart';
 import 'package:spacexplorer/views/main_screen.dart';
-import 'package:spacexplorer/views/trip_screen.dart';
 import 'package:spacexplorer/views/mission_screen.dart';
+import 'package:spacexplorer/views/leader_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key key,  this.token}) : super(key: key);
@@ -36,9 +36,9 @@ class _HomeScreenState extends State<HomeScreen> {
         create: (BuildContext context) => MissionBloc()..add(FetchMissionData(getPlane, widget.token)),
         child: MissionScreen(token : widget.token),
       ),
-      BlocProvider<TripBloc>(
-        create: (BuildContext context) => TripBloc()..add(FetchTripData(getTrip, widget.token)),
-        child: TripScreen(token : widget.token),
+      BlocProvider<LeaderBloc>(
+        create: (BuildContext context) => LeaderBloc()..add(FetchLeaderData(getLeaderBoard, widget.token)),
+        child: LeaderScreen(token : widget.token),
       )
     ];
     return Scaffold(
@@ -65,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Image.asset('assets/img/rocket.png', width: 40),
           ),
           BottomNavigationBarItem(
-            title: const Text('Historique',
+            title: const Text('Leaderboard',
                 style: TextStyle(
                   color: Colors.white,
                 )),

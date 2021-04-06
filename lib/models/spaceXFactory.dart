@@ -1,25 +1,51 @@
-class Mission {
-  Mission({ this.name,this.missionPatch});
-  factory Mission.fromJson(Map<String, dynamic> json){
-    return Mission(
-        name: json['name'] as String,
-        missionPatch: json['missionPatch'] as String
+class Planet {
+  Planet({ this.picture, this.name, this.score });
+  factory Planet.fromJson(Map<String, dynamic> json){
+    return Planet(
+      picture: json['picture_url'] as String,
+      name: json['planet_name'] as String,
+      score: json['score'] as int,
     );
   }
-  String name;
-  String missionPatch;
+  final String picture;
+  final String name;
+  final int score;
 }
 
-class Rocket {
-  Rocket({ this.name,this.type});
-  factory Rocket.fromJson(Map<String, dynamic> json){
-    return Rocket(
-        name: json['name'] as String,
-        type: json['type'] as String
+class MissionItem {
+  MissionItem({ this.launchDate, this.rocketName, this.startHour, this.endHour, this.picture, this.id, this.planet });
+  factory  MissionItem.fromJson(Map<String, dynamic> json){
+    return  MissionItem(
+      planet: Planet.fromJson(json['planet'] as Map<String, dynamic>),
+      id: json['id'] as int,
+      launchDate: json['launch_date'] as String,
+      picture: json['picture_url'] as String,
+      rocketName: json['rocket_name'] as String,
+      startHour: json['start_hour'] as int,
+      endHour: json['end_hour'] as int,
     );
   }
-  String name;
-  String type;
+  final int id;
+  final String launchDate;
+  final String rocketName;
+  final String picture;
+  final int startHour;
+  final int endHour;
+  final Planet planet;
+}
+
+class MissionList {
+  MissionList({
+    this.missionItem,
+  });
+
+  factory MissionList.fromJson(List<dynamic> parsedJson) {
+    final List<MissionItem> missionItem = parsedJson.map((dynamic i)=>MissionItem.fromJson(i as Map<String, dynamic>)).toList();
+    return MissionList(
+        missionItem: missionItem
+    );
+  }
+  final List<MissionItem> missionItem;
 }
 
 class Profile {
@@ -31,73 +57,10 @@ class Profile {
         username: json['username'] as String
     );
   }
-  String avatar;
-  String email;
-  String username;
+  final String avatar;
+  final String email;
+  final String username;
 }
-
-class SpaceX {
-  SpaceX({ this.mission });
-  factory SpaceX.fromJson(Map<String, dynamic> json){
-    return SpaceX(
-        mission: Mission.fromJson(json['mission'] as Map<String, dynamic>)
-    );
-  }
-  Mission mission;
-}
-
-class SpaceXItem {
-  SpaceXItem({ this.spaceX });
-  factory SpaceXItem.fromJson(Map<String, dynamic> json){
-    return SpaceXItem(
-        spaceX: SpaceX.fromJson(json['spaceX'] as Map<String, dynamic>)
-    );
-  }
-  SpaceX spaceX;
-}
-
-class SpaceList {
-  SpaceList({
-    this.spaceList,
-  });
-
-  factory SpaceList.fromJson(List<dynamic> parsedJson) {
-    final List<SpaceXItem> spaceList = parsedJson.map((dynamic i)=>SpaceXItem.fromJson(i as Map<String, dynamic>)).toList();
-    return SpaceList(
-        spaceList: spaceList
-    );
-  }
-  final List<SpaceXItem> spaceList;
-}
-
-class LaunchItem {
-  LaunchItem({ this.missionID, this.mission, this.rocket });
-  factory LaunchItem.fromJson(Map<String, dynamic> json){
-    return LaunchItem(
-      mission: Mission.fromJson(json['mission'] as Map<String, dynamic>),
-      rocket: Rocket.fromJson(json['rocket'] as Map<String, dynamic>),
-      missionID: json['id'] as int,
-    );
-  }
-  final int missionID;
-  final Mission mission;
-  final Rocket rocket;
-}
-
-class LaunchList {
-  LaunchList({
-    this.launchList,
-  });
-
-  factory LaunchList.fromJson(List<dynamic> parsedJson) {
-    final List<LaunchItem> launchList = parsedJson.map((dynamic i)=>LaunchItem.fromJson(i as Map<String, dynamic>)).toList();
-    return LaunchList(
-        launchList: launchList
-    );
-  }
-  final List<LaunchItem> launchList;
-}
-
 
 class ProfileList {
   ProfileList({
@@ -112,3 +75,43 @@ class ProfileList {
   }
   final List<Profile> profileItem;
 }
+
+class LeaderUser {
+  LeaderUser({ this.avatar, this.username});
+  factory LeaderUser.fromJson(Map<String, dynamic> json){
+    return LeaderUser(
+      avatar: json['avatar'] as String,
+      username: json['username'] as String,
+    );
+  }
+  final String avatar;
+  final String username;
+}
+
+class Leader {
+  Leader({ this.totalScore, this.user });
+  factory Leader.fromJson(Map<String, dynamic> json){
+    return Leader(
+        totalScore: json['total_score'] as int,
+        user: LeaderUser.fromJson(json['user'] as Map<String, dynamic>),
+    );
+  }
+  final int totalScore;
+  final LeaderUser user;
+}
+
+class LeaderList {
+  LeaderList({
+    this.leaderItem,
+  });
+
+  factory LeaderList.fromJson(List<dynamic> parsedJson) {
+    final List<Leader> leaderItem = parsedJson.map((dynamic i)=>Leader.fromJson(i as Map<String, dynamic>)).toList();
+    return LeaderList(
+        leaderItem: leaderItem
+    );
+  }
+  final List<Leader> leaderItem;
+}
+
+

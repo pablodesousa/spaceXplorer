@@ -18,6 +18,8 @@ class LoadDataSuccess extends MissionStates {
   List<Object> get props => data;
 }
 
+
+
 class LoadDataFail extends MissionStates {
   final dynamic error;
 

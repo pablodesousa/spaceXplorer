@@ -93,6 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return GestureDetector(
       onTap: () {
         EasyLoading.show(status: 'loading...');
+        print(username.text + password.text);
         super.setState(() {
           bloc.add(FetchLoginData(getUserLogin, '',
               variables: <String, dynamic>{
@@ -178,48 +179,48 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
         body: Container(
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(5)),
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                  color: Colors.grey.shade200,
-                  offset: const Offset(2, 4),
-                  blurRadius: 5,
-                  spreadRadius: 2)
-            ],
-            image: const DecorationImage(
-              image: AssetImage('assets/img/Background.jpg'),
-              fit: BoxFit.cover,
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(5)),
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+              color: Colors.grey.shade200,
+              offset: const Offset(2, 4),
+              blurRadius: 5,
+              spreadRadius: 2)
+        ],
+        image: const DecorationImage(
+          image: AssetImage('assets/img/Background.jpg'),
+          fit: BoxFit.cover,
+        ),
+      ),
+      height: height,
+      child: Stack(
+        children: <Widget>[
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(height: height * .2),
+                  _title(),
+                  const SizedBox(height: 50),
+                  _usernameField('username'),
+                  const SizedBox(height: 50),
+                  _passwordField('password'),
+                  const SizedBox(height: 20),
+                  _submitButton(),
+                  SizedBox(height: height * .055),
+                  _createAccountLabel(),
+                ],
+              ),
             ),
           ),
-          height: height,
-          child: Stack(
-            children: <Widget>[
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(height: height * .2),
-                      _title(),
-                      const SizedBox(height: 50),
-                      _usernameField('username'),
-                      const SizedBox(height: 50),
-                      _passwordField('password'),
-                      const SizedBox(height: 20),
-                      _submitButton(),
-                      SizedBox(height: height * .055),
-                      _createAccountLabel(),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(top: 40, left: 0, child: _backButton()),
-            ],
-          ),
-        ));
+          Positioned(top: 40, left: 0, child: _backButton()),
+        ],
+      ),
+    ));
   }
 
   @override

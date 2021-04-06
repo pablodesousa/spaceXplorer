@@ -8,21 +8,19 @@ query LoginUser($username: String!, $password: String!) {
 ''';
 
 const String getPlane = r'''
-query launches() {
-  launches {
-    launches {
-      id
-      mission {
-        missionPatch
-        name
-      }
-      rocket {
-        name
-        type
-      }
+query launches {
+  my_trips {
+    id
+    launch_date
+    rocket_name
+    start_hour
+    end_hour
+    picture_url
+    planet {
+      picture_url
+      planet_name
+      score
     }
-    hasMore
-    cursor
   }
 }
 ''';
@@ -63,6 +61,18 @@ query user() {
     avatar
     email
     username
+  }
+}
+''';
+
+const String getLeaderBoard = r'''
+query leaderboard() {
+  leaderboard(order_by: {total_score: desc}) {
+    total_score
+    user {
+      avatar
+      username
+    }
   }
 }
 ''';

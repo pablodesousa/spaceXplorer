@@ -96,40 +96,40 @@ class _MainScreenState extends State<MainScreen> {
     bloc = BlocProvider.of<ProfileBloc>(context);
     return BlocBuilder<ProfileBloc, ProfileStates>(
         builder: (BuildContext context, ProfileStates state) {
-          if (state is LoadDataSuccess) {
-            profile = ProfileList.fromJson(state.data['user'] as List<dynamic>);
-            return _displayMainPage();
-          } else if (state is LoadDataFail) {
-            bloc.add(FetchProfileData(getProfile, widget.token));
-            return Container();
-          } else if (state is Picture) {
-            bloc.add(FetchProfileData(getProfile, widget.token));
-            return Container();
-          } else if (state is Upload) {
-            bloc.add(FetchProfileData(getProfile, widget.token));
-            return Container();
-          } else if (state is PictureSuccess)
-          {
-            print(state.data);
-            bloc.add(SetProfilePicture(uploadAvatar, widget.token, variables: {
-              'base64str': state.data,
-              'name': getRandomString(15) +
-                  '.jpg',
-              'type': 'image/jpeg'
+      if (state is LoadDataSuccess) {
+        profile = ProfileList.fromJson(state.data['user'] as List<dynamic>);
+        return _displayMainPage();
+      } else if (state is LoadDataFail) {
+        bloc.add(FetchProfileData(getProfile, widget.token));
+        return Container();
+      } else if (state is Picture) {
+        bloc.add(FetchProfileData(getProfile, widget.token));
+        return Container();
+      } else if (state is Upload) {
+        bloc.add(FetchProfileData(getProfile, widget.token));
+        return Container();
+      } else if (state is PictureSuccess)
+        {
+          print(state.data);
+          bloc.add(SetProfilePicture(uploadAvatar, widget.token, variables: {
+            'base64str': state.data,
+            'name': getRandomString(15) +
+                '.jpg',
+            'type': 'image/jpeg'
 
-            }));
-            return Container(
-              child: Center(
-                child: Text('loading', style: TextStyle(color: Colors.white)),
-              ),
-            );
-          }
-          else
-            return Container(
-              child: Center(
-                child: Text('loading'),
-              ),
-            );
-        });
+          }));
+          return Container(
+            child: Center(
+              child: Text('loading', style: TextStyle(color: Colors.white)),
+            ),
+          );
+        }
+        else
+        return Container(
+          child: Center(
+            child: Text('loading'),
+          ),
+        );
+    });
   }
 }

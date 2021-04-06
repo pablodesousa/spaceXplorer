@@ -1,18 +1,18 @@
 import 'package:equatable/equatable.dart';
 
-abstract class TripEvents extends Equatable {
-  TripEvents();
+abstract class LeaderEvents extends Equatable {
+  LeaderEvents();
 
   @override
   List<Object> get props => null;
 }
 
-class FetchTripData extends TripEvents {
+class FetchLeaderData extends LeaderEvents {
   final String query;
   final String token;
   final Map<String, dynamic> variables;
 
-  FetchTripData(this.query, this.token, {this.variables}) : super();
+  FetchLeaderData(this.query, this.token, {this.variables}) : super();
 
   @override
   List<Object> get props => [query, variables];
